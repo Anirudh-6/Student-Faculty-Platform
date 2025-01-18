@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ask a Question</title>
+</head>
+
+<body>
+    <h1>Ask a Question</h1>
+    <form action="ask_question.php" method="post">
+        <label for="question">Question:</label>
+        <textarea id="question" name="question" cols="30" rows="10"></textarea>
+        <br><br>
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">Select a category</option>
+            <?php
+            // Connect to database
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            if ($conn->connect_error) {
+                die("Connection failed: ". $conn->connect_error);
+            }
+
+            // Get categories
+            $sql = "SELECT * FROM question_category";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value='". $row['id']. "'>". $row['category_name']. "</option>";
+                }
+            }
+            $conn->close();
+           ?>
+        </select>
+        <br><br>
+        <input type="submit" value="Ask Question">
+    </form>
+</body>
+
+</html>
